@@ -1,0 +1,81 @@
+{
+	"info": {
+		"_postman_id": "62b36f1f-e951-4a0f-be0b-3d35abe98b2d",
+		"name": "FACTURACION ARI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17532349",
+		"_collection_link": "https://buhobox.postman.co/workspace/B%C3%BAhobox-DEVELOPERS~8fcaf367-ad63-4987-b399-84de19f466a3/collection/17532349-62b36f1f-e951-4a0f-be0b-3d35abe98b2d?action=share&source=collection_link&creator=17532349"
+	},
+	"item": [
+		{
+			"name": "Factura_Generate",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Cliente\": {\r\n        \"NumeroDocumento\": \"1020396260\",\r\n        \"PrimerApellido\": \"Hernandez\",\r\n        \"SegundoApellido\": \"\",\r\n        \"PrimerNombre\": \"Diana\",\r\n        \"SegundoNombre\": \"\",\r\n        \"Telefono\": \"3217879070\",\r\n        \"CodigoDaneCiudad\": \"05088\",\r\n        \"TipoRegimen\": 0,\r\n        \"Direccion\": \"carrera 53#25~32\",\r\n        \"Email\": \"diana.yamile1121@gmail.com\",\r\n        \"TipoDocumento\": 13,\r\n        \"Naturaleza\": 0,\r\n        \"RegimenFiscalCodigo\": \"49\",\r\n        \"ResponsabilidadesFiscalesCodigo\": \"R-99-PN\",\r\n        \"TributosCodigo\": \"ZZ\"\r\n    },\r\n    \"NumeroOrdenPedido\": \"377885\",\r\n    \"FormasPago\": [\r\n        {\r\n            \"Codigo\": 1,\r\n            \"Valor\": 238500,\r\n            \"NumeroComprobante\": \"377885\",\r\n            \"TipoTarjetas\": 0,\r\n            \"CodigoFranquiciaTarjetas\": 1,\r\n            \"CodigoCuentaBancaria\": \"\"\r\n        }\r\n    ],\r\n    \"Producto\": [\r\n        {\r\n            \"Referencia\": 475432,\r\n            \"CodigoBarras\": \"13083247\",\r\n            \"Cantidad\": 1,\r\n            \"PrecioVentaConIva\": 63750,\r\n            \"PorcentajeIva\": 19,\r\n            \"IdIva\": 0,\r\n            \"ValorBase\": 63750,\r\n            \"PorcentajeDescuento\": 0,\r\n            \"TotalDescuento\": 0,\r\n            \"ValorTotal\": 63750,\r\n            \"Combo\": 0,\r\n            \"CostoUnitario\": 0\r\n        },\r\n        {\r\n            \"Referencia\": 475433,\r\n            \"CodigoBarras\": \"000013089903\",\r\n            \"Cantidad\": 1,\r\n            \"PrecioVentaConIva\": 60000,\r\n            \"PorcentajeIva\": 19,\r\n            \"IdIva\": 0,\r\n            \"ValorBase\": 60000,\r\n            \"PorcentajeDescuento\": 0,\r\n            \"TotalDescuento\": 0,\r\n            \"ValorTotal\": 60000,\r\n            \"Combo\": 0,\r\n            \"CostoUnitario\": 0\r\n        },\r\n        {\r\n            \"Referencia\": 475434,\r\n            \"CodigoBarras\": \"000130892768\",\r\n            \"Cantidad\": 1,\r\n            \"PrecioVentaConIva\": 114750,\r\n            \"PorcentajeIva\": 19,\r\n            \"IdIva\": 0,\r\n            \"ValorBase\": 114750,\r\n            \"PorcentajeDescuento\": 0,\r\n            \"TotalDescuento\": 0,\r\n            \"ValorTotal\": 114750,\r\n            \"Combo\": 0,\r\n            \"CostoUnitario\": 0\r\n        }\r\n    ],\r\n    \"NumeroDocumentoEmpleado\": \"9999999\",\r\n    \"TipoNumeracion\": 0,\r\n    \"Token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZERvY3VtZW50byI6IjAiLCJEaXJlY2Npb25JcCI6IlkzZHljbGZWUlJhTWZnb21TNWdFbnRyK3ZwUmZUcnpySVpOVXowTGxKWXdxdmxGRUR1QjJyWE1JVkU4Z3hHQjYrNXJDdUo4K3RwR0pTN3B4QnVWY3VnPT0iLCJVc3VhcmlvIjoiWkpRMUt5a0Z5Q2JkSWdZeU9sdzlyL1l4QW9wTlFER3dwTEtNajlOVTdtdz0iLCJDb250cmFzZW5hIjoiZHpKeGVFVElFMzlHeFdhbzU0MG83RHMyMkhuSTJjdHNTSFQwMVhlT2p4Zz0iLCJFc3F1ZW1hIjoiaU13Q3Q0a0hLUDY5QWFDUnhvL0xhY2hleFN6V2FGckxEV2FIRk0waFFHRW1FL0ZOb2NnUUVvRE5jUDV5cXdoKzk2OStXOEhvUWRPZzJVVkovaDlFeG5CQU5NRlJtREh5Wk5DWklVcmxuTzg9IiwiSGFiaWxpdGFyQ29udGFiaWxpZGFkIjoiVHJ1ZSIsIklkVXN1YXJpbyI6IjE1IiwiU2VydmljaW8iOiIwIiwibmJmIjoxNzQ1MjgzMTA3LCJleHAiOjE3NDUyODM0MDcsImlhdCI6MTc0NTI4MzEwNywiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo0OTIyMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDkyMjAifQ.OYRBihxzQfWeeD93Y2tmYHOmTqcnIrMI71gaPUVpXmU\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://integwebapimentaoficialbodega20211022.azurewebsites.net/api/GuardarFacturaVenta",
+					"protocol": "https",
+					"host": [
+						"integwebapimentaoficialbodega20211022",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"api",
+						"GuardarFacturaVenta"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"IdDocumento\": \"0\",\r\n    \"Cadena\": [\r\n        \"iMwCt4kHKP69AaCRxo/LachexSzWaFrLDWaHFM0hQGEmE/FNocgQEoDNcP5yqwh+969+W8HoQdOg2UVJ/h9ExnBANMFRmDHyZNCZIUrlnO8=\"\r\n    ],\r\n    \"HabilitarContabilidad\": true,\r\n    \"IdUsuario\": 1,\r\n    \"Usuario\": \"PAGINA\",\r\n    \"Contrasena\": \"PAGINA\",\r\n    \"Servicio\": 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://integwebapimentaoficialbodega20211022.azurewebsites.net/api/login/authenticate",
+					"protocol": "https",
+					"host": [
+						"integwebapimentaoficialbodega20211022",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"api",
+						"login",
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
