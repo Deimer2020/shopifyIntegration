@@ -3,6 +3,20 @@ import { ResponseAri } from "../../../types/responseAriFacture";
 import { ShopifyResponse } from "../../../types/shopify.data";
 import { mapShopifyToInvoiceData } from "../../../utils/mapShopifyToInvoiceData";
 
+// 👇 Función de validación
+function handleAriResponse(response: Response, responseAri: ResponseAri) {
+  if (!response.ok) {
+    throw new Error(`Error HTTP ${response.status} - ${response.statusText}`);
+  }
+
+  if (!responseAri.Exito) {
+    const mensajeError = responseAri.MensajeError || "Fallo al generar la factura en ARI.";
+    throw new Error(`Error en ARI: ${mensajeError}`);
+  }
+
+  return responseAri;
+}
+
 export class InvoiceService {
   static async sendInvoiceToExternalService(
     data: ShopifyResponse,
@@ -11,6 +25,7 @@ export class InvoiceService {
     try {
       const token = await obtenerToken(shop);
       const invoiceData = await mapShopifyToInvoiceData(data, token);
+      console.log("Cuerpo enviado a ARI:", JSON.stringify(invoiceData, null, 2))
 
       const response = await fetch(
         `${process.env.ARI_SERVICE_URL}/GuardarFacturaVenta`,
@@ -24,6 +39,8 @@ export class InvoiceService {
       );
       const responseAri = (await response.json()) as ResponseAri;
       console.log("RESPONSE ARI==>", JSON.stringify(responseAri));
+
+      handleAriResponse(response, responseAri);
 
       if (!response.ok) {
         throw new Error(`Error al enviar la factura: ${response.statusText}`);

@@ -5,11 +5,11 @@ import dotenv, { config } from "dotenv";
 dotenv.config();
 const configShopify = [
   {
-    SHOPIFY_TOKEN: "",
-    SHOPIFY_API_KEY: "",
+    SHOPIFY_TOKEN:"",
+    SHOPIFY_API_KEY:  "",
     SHOPIFY_SECRET_KEY: "",
-    SHOPIFY_SHOP_NAME: "",
-    SHOPIFY_VERSION_API: "2024-01",
+    SHOPIFY_SHOP_NAME:"",
+    SHOPIFY_VERSION_API: "",
     cadena: "",
     account: 0,
     eventos: ["orders/paid"],
