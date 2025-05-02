@@ -1,4 +1,4 @@
-import { CityService } from "../modules/products/services/city.service";
+import { CityService } from "../services/city.service";
 import { AriFactureBody } from "../types/AriFacture.data";
 import { LineItem, ShopifyResponse } from "../types/shopify.data";
 

@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import { Sequelize } from "sequelize-typescript";
-import { AuditBilling } from "../modules/products/model/logTable.model";
+import { AuditBilling } from "../order/model/logTable.model";
 
 export class DbConnecction {
   constructor() {

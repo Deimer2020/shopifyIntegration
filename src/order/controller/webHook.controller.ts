@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { ShopyfyService } from "../../../shopify/shopify.service";
+import { ShopyfyService } from "../services/shopify.service";
 import { InvoiceService } from "../services/invoice.service";
-import { ShopifyResponse } from "../../../types/shopify.data";
+import { ShopifyResponse } from "../types/shopify.data";
 
 export class WebhookController {
   constructor(private shopifyService = new ShopyfyService()) {}

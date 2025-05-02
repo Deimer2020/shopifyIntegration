@@ -1,10 +1,10 @@
 import { config } from "dotenv";
 import express, { Request, Response } from "express";
-import { URL_PRODUCTS } from "./src/utils/constanst";
-import { URL_WEBHOOK } from "./src/utils/constanst";
-import { ProductRouter } from "./src/modules/products/router/product.router";
-import { WebhookRouter } from "./src/modules/products/router/webHook.router";
-import { DbConnecction } from "./src/conexion/connection";
+import { URL_PRODUCTS } from "./src/order/utils/constanst";
+import { URL_WEBHOOK } from "./src/order/utils/constanst";
+import { ProductRouter } from "./src/order/router/product.router";
+import { WebhookRouter } from "./src/order/router/webHook.router";
+import { DbConnecction } from "./src/db/connection";
 
 const PORT = process.env.PORT || 3000;
 

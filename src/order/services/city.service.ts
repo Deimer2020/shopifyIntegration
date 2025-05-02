@@ -1,4 +1,4 @@
-import { City } from "../../../types/cityApi.data";
+import { City } from "../types/cityApi.data";
 
 export class CityService {
   public static async obtainCity(

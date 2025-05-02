@@ -1,10 +1,10 @@
-import { ShopifyConfig } from "./../../../types/shopifyConfig.data";
-import { ShopyfyService } from "../../../shopify/shopify.service";
-import { ResponseAri } from "../../../types/responseAriFacture";
-import { ShopifyResponse } from "../../../types/shopify.data";
-import { mapShopifyToInvoiceData } from "../../../utils/mapShopifyToInvoiceData";
+import { ShopifyConfig } from "../types/shopifyConfig.data";
+import { ShopyfyService } from "./shopify.service";
+import { ResponseAri } from "../types/responseAriFacture";
+import { ShopifyResponse } from "../types/shopify.data";
+import { mapShopifyToInvoiceData } from "../utils/mapShopifyToInvoiceData";
 import { AuditService } from "./audit.service";
-import { AriFactureBody } from "../../../types/AriFacture.data";
+import { AriFactureBody } from "../types/AriFacture.data";
 
 // 👇 Función de validación
 function handleAriResponse(response: Response, responseAri: ResponseAri) {

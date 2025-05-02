@@ -11,7 +11,7 @@ const directory = process.cwd();
 export class ShopyfyService {
   private async readConfig(): Promise<ShopifyConfig[]> {
     const data = await fs.readFile(
-      path.join(directory, "src/db/shopify_config.json"),
+      path.join(directory, "src/static/shopify_config.json"),
       {
         encoding: "utf8",
       }

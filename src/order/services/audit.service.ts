@@ -1,5 +1,5 @@
-import { AriFactureBody } from "../../../types/AriFacture.data";
-import { ResponseAri } from "../../../types/responseAriFacture";
+import { AriFactureBody } from "../types/AriFacture.data";
+import { ResponseAri } from "../types/responseAriFacture";
 import { AuditBilling } from "../model/logTable.model";
 
 export class AuditService {
