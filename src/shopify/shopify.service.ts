@@ -1,45 +1,48 @@
 import crypto from "crypto";
 import axios from "axios";
 import dotenv, { config } from "dotenv";
+import fs from "fs/promises";
+import path from "node:path";
+import { ShopifyConfig } from "../types/shopifyConfig.data";
 
 dotenv.config();
-const configShopify = [
-  {
-    SHOPIFY_TOKEN:"",
-    SHOPIFY_API_KEY:  "",
-    SHOPIFY_SECRET_KEY: "",
-    SHOPIFY_SHOP_NAME:"",
-    SHOPIFY_VERSION_API: "",
-    cadena: "",
-    account: 0,
-    eventos: ["orders/paid"],
-  },
-];
+const directory = process.cwd();
 
 export class ShopyfyService {
+  private async readConfig(): Promise<ShopifyConfig[]> {
+    const data = await fs.readFile(
+      path.join(directory, "src/db/shopify_config.json"),
+      {
+        encoding: "utf8",
+      }
+    );
+    return JSON.parse(data);
+  }
   // Método para obtener la configuración de una empresa específica
-  public static getConfigByEmpresa(shop: string) {
-    const config = configShopify.find((c) => c.SHOPIFY_SHOP_NAME === shop);
+  public async getConfigByEmpresa(shop: string) {
+    const dataConfig = await this.readConfig();
+    const config = dataConfig.find((c) => c.SHOPIFY_SHOP_NAME === shop);
     if (!config) {
       throw new Error(`No se encontró configuración para la empresa: ${shop}`);
     }
     return config;
   }
-  //metodo para obtener los eventos por empresa
-  public static getEventosByEmpresa(shop: string): string[] {
-    const config = this.getConfigByEmpresa(shop);
+
+  public async getEventosByEmpresa(shop: string): Promise<string[]> {
+    const config = await this.getConfigByEmpresa(shop);
     if (!config || !config.eventos) {
       throw new Error(
         `no se encontraron eventos configurados para el shop ${shop}`
       );
     }
-    return config.eventos; // Retorna los eventos configurados para la empresa
+    return config.eventos;
   }
 
   // CRUD: Obtener productos
-  public static async getProducts(empresa: string) {
-    const config = this.getConfigByEmpresa(empresa);
-    const API_URL_VARIANTS = `https://${config.SHOPIFY_SHOP_NAME}/admin/api/${config.SHOPIFY_VERSION_API}/products.json`;
+  public async getProducts(empresa: string) {
+    const config = await this.getConfigByEmpresa(empresa);
+    const version = process.env.SHOPIFY_VERSION_API;
+    const API_URL_VARIANTS = `https://${config.SHOPIFY_SHOP_NAME}/admin/api/${version}/products.json`;
 
     try {
       const response = await axios.get(API_URL_VARIANTS, {
@@ -56,37 +59,9 @@ export class ShopyfyService {
     }
   }
 
-  //CRUD
-  /*  public static async getProducts() {
-    const API_URL_PRODUCTS = https://${this.SHOP_NAME}/admin/api/${this.VERSION_API}/products.json;
-    const API_URL_VARIANTS = https://${this.SHOP_NAME}/admin/api/${this.VERSION_API}/variants.json;
+  public async generateHmac(body: any, empresa: string): Promise<string> {
     try {
-      const response = await axios.get(API_URL_VARIANTS, {
-        headers: {
-          "X-Shopify-Access-Token": this.ACCESS_TOKEN,
-        },
-      });
-
-      const listProductsGnal = response.data.variants ?? response.data.products;
-      //   const product = ShopifyUtils.getByProductByKey(
-      //     "325455454",
-      //     "barcode",
-      //     listProductsGnal
-      //   );
-      return listProductsGnal;
-    } catch (error: any) {
-      console.error("Error obteniendo productos:", error);
-      return null;
-    }
-  }
- */
-
-  //WEBHOOK
-
-  // Nueva función para generar la firma HMAC
-  public static generateHmac(body: any, empresa: string): string {
-    try {
-      const config = this.getConfigByEmpresa(empresa);
+      const config = await this.getConfigByEmpresa(empresa);
       const secret = config.SHOPIFY_SECRET_KEY || "";
       if (!secret) {
         throw new Error(
@@ -110,11 +85,11 @@ export class ShopyfyService {
       throw new Error("No se pudo generar la firma HMAC.");
     }
   }
-  public static webhook(bodyweb: any, header: string, empresa: string) {
+  public async webhook(bodyweb: any, header: string, empresa: string) {
     try {
       //  console.log("UPDATE_ORDER");
       const hmac = header;
-      const hash = this.generateHmac(bodyweb, empresa);
+      const hash = await this.generateHmac(bodyweb, empresa);
       if (hmac.trim() === hash.trim()) {
         console.log("Firma válida. Evento recibido:", bodyweb);
         return { valid: true, data: bodyweb };

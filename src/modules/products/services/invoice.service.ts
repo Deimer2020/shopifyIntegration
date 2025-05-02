@@ -1,7 +1,10 @@
+import { ShopifyConfig } from "./../../../types/shopifyConfig.data";
 import { ShopyfyService } from "../../../shopify/shopify.service";
 import { ResponseAri } from "../../../types/responseAriFacture";
 import { ShopifyResponse } from "../../../types/shopify.data";
 import { mapShopifyToInvoiceData } from "../../../utils/mapShopifyToInvoiceData";
+import { AuditService } from "./audit.service";
+import { AriFactureBody } from "../../../types/AriFacture.data";
 
 // 👇 Función de validación
 function handleAriResponse(response: Response, responseAri: ResponseAri) {
@@ -10,7 +13,8 @@ function handleAriResponse(response: Response, responseAri: ResponseAri) {
   }
 
   if (!responseAri.Exito) {
-    const mensajeError = responseAri.MensajeError || "Fallo al generar la factura en ARI.";
+    const mensajeError =
+      responseAri.MensajeError || "Fallo al generar la factura en ARI.";
     throw new Error(`Error en ARI: ${mensajeError}`);
   }
 
@@ -23,9 +27,17 @@ export class InvoiceService {
     shop: string
   ): Promise<{ success: boolean; data: any; error?: any }> {
     try {
+      const auditService = new AuditService();
+      const order = await auditService.existOrder(data.order_number.toString());
+      if (order) {
+        return {
+          success: false,
+          data: null,
+          error: "Ya se encuentra facturada esta orden",
+        };
+      }
       const token = await obtenerToken(shop);
       const invoiceData = await mapShopifyToInvoiceData(data, token);
-      console.log("Cuerpo enviado a ARI:", JSON.stringify(invoiceData, null, 2))
 
       const response = await fetch(
         `${process.env.ARI_SERVICE_URL}/GuardarFacturaVenta`,
@@ -38,12 +50,18 @@ export class InvoiceService {
         }
       );
       const responseAri = (await response.json()) as ResponseAri;
-      console.log("RESPONSE ARI==>", JSON.stringify(responseAri));
 
       handleAriResponse(response, responseAri);
 
       if (!response.ok) {
         throw new Error(`Error al enviar la factura: ${response.statusText}`);
+      }
+      const responseLog = await auditService.create(
+        responseAri,
+        invoiceData as AriFactureBody
+      );
+      if (!responseLog) {
+        console.log("Ya se facturo el producto");
       }
 
       return { success: responseAri.Exito, data: responseAri };
@@ -56,7 +74,8 @@ export class InvoiceService {
 
 export async function obtenerToken(shop: string): Promise<string> {
   try {
-    const company = ShopyfyService.getConfigByEmpresa(shop);
+    const shopifyService: ShopyfyService = new ShopyfyService();
+    const company = await shopifyService.getConfigByEmpresa(shop);
     if (!company) {
       throw new Error("Empresa no configurada");
     }

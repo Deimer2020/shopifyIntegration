@@ -25,11 +25,9 @@ export const mapShopifyToInvoiceData = async (
       TipoRegimen: 0,
       Direccion: shopifyData.billing_address.address1,
       Email: shopifyData.email,
-      TipoDocumento:13,
-        //!shopifyData.company || shopifyData.company === "" ? 13 : 31, */
-      // Naturaleza: !shopifyData.company || shopifyData.company === "" ? 0 : 1,
+      TipoDocumento: 13,
       Naturaleza: 0,
-      //Company: shopifyData.company ? shopifyData.company.toString() : "",
+      Company: shopifyData.company,
       RegimenFiscalCodigo: "49",
       ResponsabilidadesFiscalesCodigo: "R-99-PN",
       TributosCodigo: "ZZ",
@@ -38,7 +36,7 @@ export const mapShopifyToInvoiceData = async (
     FormasPago: [
       {
         Codigo: 1,
-        //Valor: parseFloat(shopifyData.total_price),
+        Valor: parseFloat(shopifyData.subtotal_price),
         NumeroComprobante: shopifyData.confirmation_number.toString(),
         TipoTarjetas: 0,
         CodigoFranquiciaTarjetas: 1,

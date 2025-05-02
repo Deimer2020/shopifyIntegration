@@ -20,7 +20,7 @@ export interface Cliente {
   Direccion: string;
   Email: string;
   TipoDocumento: number;
- // Company: string;
+  Company: string;
   Naturaleza: number;
   RegimenFiscalCodigo: string;
   ResponsabilidadesFiscalesCodigo: string;
@@ -29,7 +29,7 @@ export interface Cliente {
 
 export interface FormasPago {
   Codigo: number;
- // Valor: number;
+  Valor: number;
   NumeroComprobante: string;
   TipoTarjetas: number;
   CodigoFranquiciaTarjetas: number;
@@ -38,8 +38,8 @@ export interface FormasPago {
 
 export interface Producto {
   Referencia: number;
-  CodigoBarras:string;
- // Sku: number;
+  CodigoBarras: string;
+  // Sku: number;
   Cantidad: number;
   PrecioVentaConIva: number;
   PorcentajeIva: number;

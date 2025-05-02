@@ -4,6 +4,8 @@ import { InvoiceService } from "../services/invoice.service";
 import { ShopifyResponse } from "../../../types/shopify.data";
 
 export class WebhookController {
+  constructor(private shopifyService = new ShopyfyService()) {}
+
   async webhook(req: Request, res: Response) {
     try {
       const body = req.body;
@@ -14,7 +16,7 @@ export class WebhookController {
 
       if (!shopDomain) {
         console.warn("Falta el encabezado de X-Shopify-Shop-Domain ");
-        return res
+        res
           .status(400)
           .json({ error: "Falta el encabezado 'X-Shopify-Shop-Domain'." });
       }
@@ -22,21 +24,19 @@ export class WebhookController {
       if (test !== "TEST") {
         if (!hmac || !topic || !shopDomain) {
           console.error("Encabezados faltantes.");
-          return res
-            .status(400)
-            .json({ error: "Faltan encabezados requeridos." });
+          res.status(400).json({ error: "Faltan encabezados requeridos." });
         }
       }
 
       let eventos: string[] = [];
       try {
-        eventos = ShopyfyService.getEventosByEmpresa(shopDomain);
+        eventos = await this.shopifyService.getEventosByEmpresa(shopDomain);
       } catch (error: any) {
         console.error(
           `Error obteniendo eventos para el shop ${shopDomain}:`,
           error.message
         );
-        return res.status(404).json({
+        res.status(404).json({
           error: `La tienda '${shopDomain}' no está registrada en el sistema.`,
         });
       }
@@ -46,23 +46,30 @@ export class WebhookController {
         console.warn(
           `Evento ${topic} no permitido para la empresa ${shopDomain}.`
         );
-        return res.status(403).json({ error: `Evento ${topic} no permitido.` });
+        res.status(403).json({ error: `Evento ${topic} no permitido.` });
       }
 
       if (test !== "TEST") {
-        const signature = ShopyfyService.generateHmac(body, shopDomain);
+        const signature = await this.shopifyService.generateHmac(
+          body,
+          shopDomain
+        );
         console.log(`Firma HMAC generada: ${signature}`);
 
         if (hmac.trim() !== signature.trim()) {
           console.warn("Firma HMAC inválida.");
-          return res.status(403).json({ error: "Firma HMAC inválida." });
+          res.status(403).json({ error: "Firma HMAC inválida." });
         }
 
-        const result = ShopyfyService.webhook(body, hmac, shopDomain);
+        const result = await this.shopifyService.webhook(
+          body,
+          hmac,
+          shopDomain
+        );
 
         if (!result.valid || result.error) {
           console.error("Error procesando el webhook:", result.error);
-          return res.status(403).json({
+          res.status(403).json({
             error: result.error || "Hubo un error al procesar el webhook.",
           });
         }
